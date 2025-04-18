@@ -1,8 +1,9 @@
-package nl.markschuurmans.core.commands.commands;
+package nl.markschuurmans.core.modules.example.commands;
 
 import nl.markschuurmans.core.commands.annotations.*;
 import nl.markschuurmans.core.commands.enums.CommandSenderType;
 import nl.markschuurmans.core.commands.framework.*;
+import nl.markschuurmans.core.modules.example.menus.ExampleMenu;
 import org.bukkit.Bukkit;
 
 @CommandInfo(name = "example", aliases = {"ex"}, permission = "core.example", allowedSender = CommandSenderType.PLAYER_ONLY)
@@ -10,6 +11,7 @@ public class ExampleCommand extends BaseCommand {
 
     @SubCommand(name = "hello")
     public void hello(CommandContext ctx) {
+        ExampleMenu.open(ctx.getPlayer());
         ctx.sender().sendMessage("§aHello there!");
     }
 
