@@ -1,18 +1,24 @@
 package nl.markschuurmans.core.commands.framework;
 
+import nl.markschuurmans.core.commands.annotations.CommandInfo;
+import nl.markschuurmans.core.commands.annotations.SubCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Method;
 import java.util.*;
 
-import nl.markschuurmans.core.commands.annotations.*;
-
 public abstract class BaseCommand implements CommandExecutor, TabCompleter {
     private final Map<String, Method> subCommands = new HashMap<>();
+    private final CommandInfo commandInfo;
 
     public BaseCommand() {
+        this.commandInfo = this.getClass().getAnnotation(CommandInfo.class);
+
         for (Method method : this.getClass().getDeclaredMethods()) {
             if (method.isAnnotationPresent(SubCommand.class)) {
                 SubCommand sub = method.getAnnotation(SubCommand.class);
@@ -22,7 +28,16 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
+        if (!commandInfo.allowedSender().matchSender(sender)) {
+            if (sender instanceof Player) {
+                sender.sendMessage("§cThis command can only be used by the console.");
+            } else {
+                sender.sendMessage("§cThis command can only be used by players.");
+            }
+            return true;
+        }
+
         if (args.length > 0) {
             String sub = args[0].toLowerCase();
             Method method = subCommands.get(sub);
@@ -46,7 +61,7 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, String[] args) {
         List<String> completions = new ArrayList<>();
 
         if (args.length == 1) {

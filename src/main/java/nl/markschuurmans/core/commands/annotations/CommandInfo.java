@@ -1,5 +1,7 @@
 package nl.markschuurmans.core.commands.annotations;
 
+import nl.markschuurmans.core.commands.enums.CommandSenderType;
+
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
@@ -8,5 +10,5 @@ public @interface CommandInfo {
     String name();
     String permission() default "";
     String[] aliases() default {};
-    boolean playerOnly() default false;
+    CommandSenderType allowedSender() default CommandSenderType.ANY;
 }

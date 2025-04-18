@@ -3,7 +3,6 @@ package nl.markschuurmans.core.commands.framework;
 import nl.markschuurmans.core.commands.annotations.CommandInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
