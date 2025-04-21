@@ -1,4 +1,4 @@
-package nl.markschuurmans.core.chat;
+package nl.markschuurmans.core.chat.common;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GradientUtil {
+public class GradientCreator {
 
     public static List<ChatColor> createGradient(String startHex, String endHex, int steps) {
         Color start = Color.decode(startHex);
